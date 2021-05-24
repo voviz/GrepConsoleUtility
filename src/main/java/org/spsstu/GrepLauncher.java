@@ -21,7 +21,7 @@ public class GrepLauncher {
     private Boolean invertConditions;
     @Option(name = "-i", metaVar = "IgnoreRegister")
     private Boolean ignoreRegister;
-    @Option(name = "-r", metaVar = "Regex")
+    @Option(name = "-r", metaVar = "Regex", forbids={"-i"})
     private Boolean regexInsteadWord;
     @Argument(required = true, usage = "Word to search")
     private String theSearchedWord;
@@ -39,7 +39,7 @@ public class GrepLauncher {
         } catch (CmdLineException e) {
             System.err.println(e.getMessage());
             System.err.println("java -jar grep [-v] [-i] [-r] word inputname.txt");
-            parser.printUsage(System.err);
+            //parser.printUsage(System.err);
             return;
         }
         Grep grep = new Grep(invertConditions, ignoreRegister, regexInsteadWord, theSearchedWord, inputFileName);

@@ -22,25 +22,34 @@ class Grep {
         StringBuilder result = new StringBuilder();
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = reader.readLine();
+        String checkLine = line;
         Pattern pattern = Pattern.compile(word);
+        boolean first = true;
         while (line != null) {
             boolean flag = false;
             if (ignore) {
-                line = line.toLowerCase();
+                checkLine = line.toLowerCase();
                 word = word.toLowerCase();
             }
             if (regex) {
                 Matcher matcher = pattern.matcher(line);
                 flag = matcher.find();
             }
-            else if (line.contains(word)) {
+            else if (checkLine.contains(word)) {
                 flag = true;
             }
             if (invert) {
                 flag = !flag;
             }
-            if (flag) result.append(line).append("\n");
+            if (flag) {
+                if (first) {
+                    result.append(line);
+                    first = false;
+                }
+                else result.append(System.getProperty("line.separator")).append(line);
+            }
             line = reader.readLine();
+            checkLine = line;
         }
         reader.close();
         return result.toString();
